@@ -1,17 +1,17 @@
 # GPS-waypoint-based-Autonomous-Navigation-in-ROS
-GPS points will be predefined for the robot to navigate to the destination avoiding obstacles.
+로봇은 장애물을 피하며 목적지로 안전하게 이동하기 위해 미리 정의된 GPS 지점을 따라갑니다.
 
-This repo package was tested on:
-### Custom Rover has
+이 저장소 패키지는 다음에서 테스트되었습니다:
+### Custom Rover
 - Nvidia Jetson TX2 with Ubuntu 18.04
 - Razor 9DOF IMU, 
 - ZED F9P (RTK2) GPS, and 
 - RPLidar A1 lidar. 
-### The base station has 
+### The base station
 - Laptop with Ubuntu 18.04
 
 ## Motivation
-This work was performed to participate in University Rover Challenge (URC) 2019 for Team Interplanetar (BUET Mars Rover Robotics Team). Special thanks goes to Daniel Snider for open sourcing his work:
+이 작업은 Interplanetar 팀(BUET Mars Rover Robotics Team)이 2019년 대학 로버 챌린지(University Rover Challenge, URC)에 참가하기 위해 수행되었습니다. 이 작업을 오픈 소스로 공개한 Daniel Snider에게 특별한 감사를 전합니다:
 - ROS Rover <[code](https://github.com/danielsnider/ros-rover)>
 - Simple Drive <[code](https://github.com/danielsnider/simple_drive)> <[ROS Wiki](http://wiki.ros.org/simple_drive)>
 - Follow Waypoints <[code](https://github.com/danielsnider/follow_waypoints)> <[ROS Wiki](http://wiki.ros.org/follow_waypoints)>
@@ -21,100 +21,100 @@ This work was performed to participate in University Rover Challenge (URC) 2019 
 
 ## Run the package
 
-In your terminal, navigate to your catkin_ws's source (src) directory & run:
+터미널에서 catkin_ws의 소스(src) 디렉터리로 이동한 다음 다음 명령을 실행하세요:
 ```
 cd catkin_ws/src
 git clone https://github.com/ArghyaChatterjee/gps-waypoint-based-autonomous-navigation-in-ros.git gps_waypoint_nav
 cd ..
 catkin_make --only-pkg-with-deps gps_waypoint_nav
 ```
-In that terminal, launch the navigation file:
+그 터미널에서 navigation 파일을 실행하세요:
 ```
 source devel/setup.bash
 roslaunch gps_waypoint_nav gps_waypoint_nav.launch
 ```
-In another terminal, launch the joystick controller file:
+다른 터미널에서 joystick controller 파일을 실행하세요:
 ```
 source devel/setup.bash
 roslaunch gps_waypoint_nav joy_launch_control.launch
 ```
-Run the rover with the joystick. During the run, press "LB" to start collecting waypoints. The waypoints will be saved inside 'points_outdoor.txt'. When the run is finished, press "RB" to start following waypoints. 
+조이스틱으로 로버를 실행하세요. 실행 중에 "LB" 버튼을 눌러 웨이포인트 수집을 시작하세요. 웨이포인트는 'points_outdoor.txt' 파일에 저장됩니다. 실행이 완료되면 "RB" 버튼을 눌러 웨이포인트를 따라가기 시작하세요. 
 
 <p align="center">
     <img src="assets/gps_image.png", width="800">
 </p>
 
-## Package Description
-This package uses a combination of the following packages:
+## 패키지 설명
+이 패키지는 다음 패키지들의 조합을 사용합니다:
 
-   - ekf_localization to fuse odometry data with IMU and GPS data.
-   - navsat_transform to convert GPS data to odometry and to convert latitude and longitude points to the robot's odometry coordinate system.
-   - GMapping to create a map and detect obstacles.
-   - move_base to navigate to the goals while avoiding obstacles 
-   - goals are set using recorded or inputted waypoints.
+   - ekf_localization: 오도메트리 데이터를 IMU와 GPS 데이터와 융합합니다.
+   - navsat_transform: GPS 데이터를 오도메트리로 변환하고, 위도 및 경도 포인트를 로봇의 오도메트리 좌표 시스템으로 변환합니다.
+   - GMapping: 지도를 생성하고 장애물을 감지합니다.
+   - move_base: 장애물을 피하면서 목표지점으로 이동합니다. 
+   - 목표지점은 녹화된 또는 입력된 웨이포인트를 사용하여 설정됩니다.
 
-## Node Description
-The Navigation package within this repo includes the following custom nodes:
+## 노드 설명
+이 저장소의 네비게이션 패키지에는 다음과 같은 사용자 정의 노드가 포함되어 있습니다:
 	
-   - gps_waypoint to read the waypoint file, convert waypoints to points in the map frame and then send the goals to move_base.
-   - gps_waypoint_continuous1 for continuous navigation between waypoints using one controller. 
-   - gps_waypoint_continuous2 for continuous navigation between waypoints using another seperate controller.
-   - collect_gps_waypoint to allow the user to drive the robot around and collect their own waypoints.	
-   - calibrate_heading to set the heading of the robot at startup and fix issues with poor magnetometer data.
-   - plot_gps_waypoints to save raw data from the GPS for plotting purposes.
-   - gps_waypoint_mapping to combine waypoint navigation with Mandala Robotics' 3D mapping software for 3D mapping.
+   - gps_waypoint: 웨이포인트 파일을 읽어 웨이포인트를 지도 프레임 내의 점으로 변환한 다음 목표지점을 move_base로 전송합니다.
+   - gps_waypoint_continuous1: 하나의 컨트롤러를 사용하여 웨이포인트 간 지속적인 내비게이션을 수행합니다.
+   - gps_waypoint_continuous2: 다른 별도의 컨트롤러를 사용하여 웨이포인트 간 지속적인 내비게이션을 수행합니다.
+   - collect_gps_waypoint: 사용자가 로봇을 주행하며 자신만의 웨이포인트를 수집할 수 있도록 합니다.
+   - calibrate_heading: 시작 시 로봇의 헤딩을 설정하고, 열악한 자기계 데이터 문제를 해결합니다.
+   - plot_gps_waypoints: 그래프 작성 목적으로 GPS의 원시 데이터를 저장합니다.
+   - gps_waypoint_mapping: Mandala Robotics의 3D 매핑 소프트웨어와 웨이포인트 내비게이션을 결합하여 3D 매핑을 수행합니다.
 
-## Convert lattitude-longitude to local odometry message
-If you want to convert /navsat/fix topic from gps sensor to /navsat/odom topic (local cordinate frame), use these 2 packages directly:
-- Geonav Transform <[code](https://github.com/bsb808/geonav_transform)> <[ROS wiki](http://wiki.ros.org/geonav_transform)>
-- Geographic Info <[code](https://github.com/ros-geographic-info/geographic_info)> <[ROS wiki](http://wiki.ros.org/geographic_info)> <[website](http://library.isr.ist.utl.pt/docs/roswiki/navsat_odometry.html)> <[ROS wiki2](http://wiki.ros.org/navsat_odometry)>
-- Lattitude, Longitude & Altitude to Pose Stamped <[code](https://github.com/arpg/ROS-UTM-LLA)>
-- Eagle Eye for GPS & IMU Fused Odometry <[code](https://github.com/MapIV/eagleye)> <[youtube](https://www.youtube.com/watch?v=u8Nan38BkDw)>
-- IMU GPS Localization: Using EKF to fuse IMU and GPS data <[code](https://github.com/ydsf16/imu_gps_localization)>
+## 위도 경도를 로컬 오도메트리 메시지로 변환
+만약 GPS 센서의 /navsat/fix 토픽을 로컬 좌표 프레임인 /navsat/odom 토픽으로 변환하려면, 다음 두 패키지를 직접 사용하세요:
+- Geonav Transform <[코드](https://github.com/bsb808/geonav_transform)> <[ROS 위키](http://wiki.ros.org/geonav_transform)>
+- Geographic Info <[코드](https://github.com/ros-geographic-info/geographic_info)> <[ROS 위키](http://wiki.ros.org/geographic_info)> <[웹사이트](http://library.isr.ist.utl.pt/docs/roswiki/navsat_odometry.html)> <[ROS 위키2](http://wiki.ros.org/navsat_odometry)>
+- Lattitude, Longitude & Altitude to Pose Stamped <[코드](https://github.com/arpg/ROS-UTM-LLA)>
+- Eagle Eye for GPS & IMU Fused Odometry <[코드](https://github.com/MapIV/eagleye)> <[유튜브](https://www.youtube.com/watch?v=u8Nan38BkDw)>
+- IMU GPS Localization: Using EKF to fuse IMU and GPS data <[코드](https://github.com/ydsf16/imu_gps_localization)>
 
 
-## Details Understanding of the package
+## 패키지의 상세한 이해
 - [ROS Extra Class #2: How to use GPS to do autonomous robot navigation?](https://www.youtube.com/watch?v=cmOplaq8cHc)
 
-## GPS related ros drivers
+## ROS에서 활용되는 GPS 관련 드라이버들
 - GPSD <[code](https://github.com/ros-drivers/gps_umd)> <[ROS Tutorial](https://wiki.ros.org/gpsd_client/Tutorials/)>
 
-## Related Issues
-- [Robot localization navsat transform node does not publish](https://answers.ros.org/question/332905/robot_localization-navsat-transform-node-does-not-publish/)
-- [Imu and GPS fusion without odom robot localization package](https://answers.ros.org/question/236588/imu-and-gps-fusion-without-odom-robot_localization/)
-- [How to fuse imu and gps using robot localization package](https://answers.ros.org/question/200071/how-to-fuse-imu-gps-using-robot_localization/)
+## 관련 이슈
+- [로봇 로컬라이제이션 navsat transform 노드가 발행되지 않을때](https://answers.ros.org/question/332905/robot_localization-navsat-transform-node-does-not-publish/)
+- [오도메트리 없이 IMU와 GPS 융합을 수행하는 로봇 로컬라이제이션 패키지.](https://answers.ros.org/question/236588/imu-and-gps-fusion-without-odom-robot_localization/)
+- [로봇 로컬라이제이션 패키지를 활용하여 IMU와 GPS 데이터를 결합하는 방법](https://answers.ros.org/question/200071/how-to-fuse-imu-gps-using-robot_localization/)
 - [GPS navigation with mobile robot](https://question2738.rssing.com/chan-42656520/all_p5.html)
 
-## Related Implementation to ROS robot
+## ROS 로봇과 관련된 구현 예시
 - Robot Localization using GPS <[website](https://wiki.nps.edu/display/RC/Localization+using+GPS%2C+IMU+and+robot_localization)>
 
-## User Interface Demo
+## 사용자 인터페이스 데모
 ### Mapviz package
-We have used mapviz package to visualize the path and the cordinates. 
+우리는 경로와 좌표를 시각화하기 위해 mapviz 패키지를 사용했습니다. 
 
-#### Binary Install:
+#### 바이너리 설치:
 ```
 sudo apt-get install ros-melodic-mapviz \
                        ros-melodic-mapviz-plugins \
                        ros-melodic-tile-map \
                        ros-melodic-multires-image		       
 ```
-#### Source Install:
+#### 소스 설치:
 ```
 cd catkin_ws/src
 git clone https://github.com/swri-robotics/mapviz.git
 rosdep install --from-paths src --ignore-src
 catkin_make
 ```
-Delete any previous configuration file that you have worked with. The sequence of plugins in your panel is vital as Mapviz draws its plugins in the order that they are listed in the plugin panel. If navsat is listed first, it will draw that first, and then it will draw the tile_map over that, so you would not be able to see any fixes.
+이전에 사용하던 구성 파일을 모두 삭제해주세요. 패널 내 플러그인의 순서가 중요합니다. Mapviz는 플러그인 패널에 나열된 순서대로 플러그인을 표시합니다. 만약 navsat 플러그인이 가장 먼저 나열되어 있다면, 그것을 먼저 표시하고 그 위에 tile_map 플러그인이 표시될 것입니다. 따라서 위치 정보를 볼 수 없을 수 있습니다.
 ```
 sudo rm ~/.mapviz_config
 ```
-In one terminal run:
+하나의 터미널에서 다음을 실행하세요:
 ```
 roscore
 ```
-In another terminal, launch the mapviz file. Your `mapviz.launch` file should look like this:
+다른 터미널에서 `mapviz` 파일을 실행하세요. `mapviz.launch` 파일은 다음과 같아야 합니다:
 ```
 <launch>
 
@@ -144,16 +144,16 @@ In another terminal, launch the mapviz file. Your `mapviz.launch` file should lo
 
 </launch>
 ```
-Use the following command to launch the `mapviz.launch` file:
+`mapviz.launch` 파일을 실행하려면 다음 명령을 사용하세요:
 ```
 cd catkin_ws
 source devel/setup.bash
 roslaunch mapviz mapviz.launch
 ```
-In the panel, leave the 1st box (fixed frame "Map" and target frame "None") as it is, add tile_map and then add navsat plugin (select topic /navsat/fix). Perform it sequencially. 
+패널에서 첫 번째 상자 (고정 프레임 "Map" 및 대상 프레임 "None")는 그대로 두고, tile_map을 추가한 다음 navsat 플러그인을 추가하세요 (/navsat/fix 토픽 선택). 이것을 순차적으로 수행하세요.
 
-#### Mapviz Testing:
-Now, you need a sample bag file which will publish the gps in `/navsat/fix` topic. Download the rosbag from [here](https://advdataset2019.wixsite.com/urbanloco/hong-kong). Run the rosbag in another terminal:
+#### Mapviz 테스트:
+이제 `/navsat/fix` 토픽에 GPS를 게시할 샘플 bag 파일이 필요합니다. [여기](https://advdataset2019.wixsite.com/urbanloco/hong-kong)에서 rosbag을 다운로드하세요. 다른 터미널에서 rosbag을 실행하세요:
 ```
 rosbag play CA-20190828184706_blur_align.bag
 ```
@@ -161,21 +161,21 @@ rosbag play CA-20190828184706_blur_align.bag
     <img src="assets/mapviz_satellite.gif", width="800">
 </p>
 
-### Rviz Satellite Package
-#### Source Install:
+### Rviz 위성 패키지
+#### 소스 설치 방법:
 ```
 cd catkin_ws/src
 git clone https://github.com/nobleo/rviz_satellite.git
 catkin_make
 ```
-Use the following command to launch the `rviz.launch` file:
+`rviz.launch` 파일을 실행하려면 다음 명령을 사용하세요:
 ```
 cd catkin_ws
 source devel/setup.bash
 roslaunch rviz_satellite demo.launch
 ```
-#### Rviz Satellite Testing:
-You need a sample bag file which will publish the gps in `/navsat/fix` topic. Download the rosbag from [here](https://advdataset2019.wixsite.com/urbanloco/hong-kong). Run the rosbag in another terminal:
+#### Rviz 위성 테스트:
+`/navsat/fix` 토픽에 GPS를 게시할 샘플 bag 파일이 필요합니다. [여기](https://advdataset2019.wixsite.com/urbanloco/hong-kong)에서 rosbag을 다운로드하세요. 다른 터미널에서 rosbag을 실행하세요:
 ```
 rosbag play CA-20190828184706_blur_align.bag
 ```
@@ -183,33 +183,33 @@ rosbag play CA-20190828184706_blur_align.bag
     <img src="assets/rviz_satellite.gif", width="800">
 </p>
 
-### Rosboard Package
-#### Install
-#### Source Install:
+### Rosboard 패키지
+#### 설치
+#### 소스 설치:
 ```
 cd catkin_ws/src
 git clone https://github.com/dheera/rosboard.git
 catkin_make
 ```
-Use the following command to launch the `rviz.launch` file:
+`rviz.launch` 파일을 실행하려면 다음 명령을 사용하세요:
 ```
 cd catkin_ws
 source devel/setup.bash
 rosrun rosboard rosboard_node
 ```
-#### Rosbaord Testing:
-You need a sample bag file which will publish the gps in `/navsat/fix` topic. Download the rosbag from [here](https://advdataset2019.wixsite.com/urbanloco/hong-kong). Run the rosbag in another terminal:
+#### Rosboard 테스트:
+`/navsat/fix` 토픽에 GPS를 게시할 샘플 bag 파일이 필요합니다. [여기](https://advdataset2019.wixsite.com/urbanloco/hong-kong)에서 rosbag을 다운로드하세요. 다른 터미널에서 rosbag을 실행하세요:
 ```
 rosbag play CA-20190828184706_blur_align.bag
 ```
-Go to http://localhost:8888 (in case in a robot http://your-robot-ip:8888/) on your local browser and add the topic you want to visualize from top left menu. You should be able to visualize the topics.
+로컬 브라우저에서 http://localhost:8888 주소로 이동하십시오 (로봇은 http://your-robot-ip:8888/). 왼쪽 상단 메뉴에서 시각화하려는 토픽을 추가하세요. 이렇게 하면 토픽을 시각화할 수 있어야 합니다.
 <p align="center">
     <img src="assets/gps_nav.gif", width="800">
 </p>
 
 
-# Gratitude
-  I would like to acknowledge the contribution of the websites which helped me while making this repo.
+# 감사의 말
+이 저장소를 만들면서 도움을 받은 웹사이트들에게 감사의 인사를 전합니다.
   - https://github.com/nickcharron
   - https://github.com/clearpathrobotics
   - https://github.com/swri-robotics
