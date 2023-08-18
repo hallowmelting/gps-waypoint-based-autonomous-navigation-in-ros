@@ -2,15 +2,15 @@
 로봇은 장애물을 피하며 목적지로 안전하게 이동하기 위해 미리 정의된 GPS 지점을 따라갑니다.
 
 이 저장소 패키지는 다음에서 테스트되었습니다:
-### Custom Rover
-- Nvidia Jetson TX2 with Ubuntu 18.04
-- Razor 9DOF IMU, 
-- ZED F9P (RTK2) GPS, and 
-- RPLidar A1 lidar. 
+### Custom Rover 스펙
+- 엔비디아 젯슨 TX2 Ubuntu 18.04
+- Razor 9DOF IMU
+- ZED F9P (RTK2) GPS
+- RPLidar A1 lidar
 ### The base station
 - Laptop with Ubuntu 18.04
 
-## Motivation
+## 동기부여
 이 작업은 Interplanetar 팀(BUET Mars Rover Robotics Team)이 2019년 대학 로버 챌린지(University Rover Challenge, URC)에 참가하기 위해 수행되었습니다. 이 작업을 오픈 소스로 공개한 Daniel Snider에게 특별한 감사를 전합니다:
 - ROS Rover <[code](https://github.com/danielsnider/ros-rover)>
 - Simple Drive <[code](https://github.com/danielsnider/simple_drive)> <[ROS Wiki](http://wiki.ros.org/simple_drive)>
